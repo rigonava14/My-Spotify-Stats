@@ -1,7 +1,20 @@
-<nav class="nav"><ul class="nav-ul">
-  <li class="nav-item">
-    <a class="link col" href="">My Spotify Stats</a>
-  </li>
-</ul></nav>
-<router-outlet />
-<footer>I'm a footer</footer>
+<nav class="nav">
+  <ul class="nav-ul">
+    <li class="nav-item"><a class="link" href="/login">Home</a></li>
+    <li class="nav-item"><a class="link" href="#">Top Tracks</a></li>
+    <li class="nav-item"><a class="link" href="#">Top Artists</a></li>
+    <li class="nav-item"><a class="link" href="#">Genres</a></li>
+    <li class="nav-item"><a class="link" href="#">Playlists</a></li>
+    <li class="nav-item"><a class="link" href="#">About</a></li>
+    <li class="nav-item dropdown">
+      <a class="fa fa-gear link" href=""></a>
+      <ul class="dropdown-menu">
+        <li><a href="" class="link">Dark Mode</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<router-outlet></router-outlet>
+
+<footer class="footer">This is just a personal project</footer>

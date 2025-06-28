@@ -1,37 +1,97 @@
-.nav{
-  height: 10%;
-  background-color: #ffffff;
-  display:flex;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  margin: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.link {
-  color: rgb(71, 71, 71);
-  text-decoration: none;
-  font-size: 16px;
-  margin: 0 1rem;
-}
-.link:hover {
-  scale: 1.1;
-}
-.nav-item {
-  list-style: none;
+.nav {
+  background-color: #0e0e0e;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
+  padding: 10px 20px;
 }
 
 .nav-ul {
   display: flex;
-  justify-content: start;
-  align-items: start;
-  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-item {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px 5px;
+  display: flex;
+}
+.nav-item:first-child {
+  border-left: none;
+}
+
+.link {
+  color: rgb(236, 236, 236);
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+.link:hover {
+  color: #14e77e;
+  transform: scale(1.1, 1.1);
+  transition: transform 0.1s ease-in-out;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #0e0e0e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  display: none;
+}
+
+.dropdown-menu li {
+  list-style: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu li:last-child {
+  border-bottom: none;
+}
+.dropdown-menu .link {
+  display: block;
+  padding: 8px 12px;
+  color: #ffffff;
+  font-size: small;
+}
+
+.dropdown:hover .link:hover {
+  color: #14e77e;
+  transform: scale(1.1, 1.1);
+  transition: transform 0.1s ease-in-out;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #f3f3f3;
+  font-weight: 400;
+  font-size: small;
+  padding: 10px;
+  background-color: #131313;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  height: 10vh;
+  border: none;
 }
