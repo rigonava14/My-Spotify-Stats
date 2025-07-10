@@ -1,20 +1,25 @@
-<nav class="nav">
+<!-- ✅ Ocultar nav en /login -->
+<nav class="nav" *ngIf="currentUrl() !== '/login'">
   <ul class="nav-ul">
-    <li class="nav-item"><a class="link" href="/login">Home</a></li>
-    <li class="nav-item"><a class="link" href="#">Top Tracks</a></li>
-    <li class="nav-item"><a class="link" href="#">Top Artists</a></li>
-    <li class="nav-item"><a class="link" href="#">Genres</a></li>
-    <li class="nav-item"><a class="link" href="#">Playlists</a></li>
-    <li class="nav-item"><a class="link" href="#">About</a></li>
+    <li class="nav-item"><a class="link" routerLink="/login">Home</a></li>
+    <li class="nav-item"><a class="link" routerLink="#">Top Tracks</a></li>
+    <li class="nav-item"><a class="link" routerLink="#">Top Artists</a></li>
+    <li class="nav-item"><a class="link" routerLink="#">Genres</a></li>
+    <li class="nav-item"><a class="link" routerLink="#">Playlists</a></li>
+    <li class="nav-item"><a class="link" routerLink="#">About</a></li>
     <li class="nav-item dropdown">
       <a class="fa fa-gear link" href=""></a>
       <ul class="dropdown-menu">
-        <li><a href="" class="link">Dark Mode</a></li>
+        <li><a class="link" href="">Dark Mode</a></li>
       </ul>
     </li>
   </ul>
 </nav>
 
+<!-- Aquí se renderiza el contenido de las rutas -->
 <router-outlet></router-outlet>
 
-<footer class="footer">This is just a personal project</footer>
+<!-- ✅ Ocultar footer en /login -->
+<footer class="footer">
+  This is just a personal project
+</footer>
