@@ -1,5 +1,5 @@
 .nav {
-  background-color: #0e0e0e;
+  background-color: var(--color-bg-darker);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +18,7 @@
 }
 
 .nav-item {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-primary);
   font-weight: 600;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
   padding: 5px 5px;
@@ -36,9 +36,9 @@
 }
 
 .link:hover {
-  color: #14e77e;
+  color: var(--color-primary-light);
   transform: scale(1.1, 1.1);
-  transition: transform 0.1s ease-in-out;
+  transition: transform var(--transition-fast);
 }
 
 .dropdown {
@@ -49,7 +49,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #0e0e0e;
+  background-color: var(--color-bg-darker);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 10px;
@@ -67,14 +67,14 @@
 .dropdown-menu .link {
   display: block;
   padding: 8px 12px;
-  color: #ffffff;
+  color: var(--color-white);
   font-size: small;
 }
 
 .dropdown:hover .link:hover {
-  color: #14e77e;
+  color: var(--color-primary-light);
   transform: scale(1.1, 1.1);
-  transition: transform 0.1s ease-in-out;
+  transition: transform var(--transition-fast);
 }
 
 .dropdown:hover .dropdown-menu {
@@ -86,11 +86,11 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: #f3f3f3;
+  color: var(--color-text-light);
   font-weight: 400;
   font-size: small;
   padding: 10px;
-  background-color: #131313;
+  background-color: var(--color-bg-dark);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   height: 10vh;
   border: none;
