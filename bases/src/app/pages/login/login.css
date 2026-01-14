@@ -65,7 +65,7 @@ h1 {
   outline-offset: 2px;
   border-color: var(--color-primary);
   transition: border-color var(--transition-normal);
-  box-shadow: 0 0 2px rgba(44, 223, 112, 0.5);
+  box-shadow: 0 0 2px var(--color-primary-shadow);
   transition: box-shadow var(--transition-normal);
  }
 

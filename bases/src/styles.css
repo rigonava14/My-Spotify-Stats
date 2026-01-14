@@ -6,9 +6,13 @@
   --color-primary: #2cdf70;
   --color-primary-dark: #20bb5b;
   --color-primary-light: #14e77e;
+  --color-primary-shadow: rgba(44, 223, 112, 0.5);
   --color-text-light: #f3f3f3;
+  --color-text-aliceblue: aliceblue;
   --color-bg-dark: #131313;
   --color-bg-darker: #0e0e0e;
+  --color-bg-gradient-start: #020202;
+  --color-bg-gradient-end: #383838;
   --color-white: #ffffff;
   
   /* Fonts */
@@ -38,8 +42,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-system);
-  background: linear-gradient(0deg, #020202, #383838);
-  color: aliceblue;
+  background: linear-gradient(0deg, var(--color-bg-gradient-start), var(--color-bg-gradient-end));
+  color: var(--color-text-aliceblue);
   height: 100%;
   width: 100%;
 }
