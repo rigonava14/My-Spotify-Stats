@@ -64,9 +64,8 @@ h1 {
   outline: var(--color-text-light);
   outline-offset: 2px;
   border-color: var(--color-primary);
-  transition: border-color var(--transition-normal);
   box-shadow: 0 0 2px var(--color-primary-shadow);
-  transition: box-shadow var(--transition-normal);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
  }
 
  .label {
