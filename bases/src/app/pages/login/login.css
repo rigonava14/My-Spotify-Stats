@@ -9,7 +9,7 @@
 h1 {
   text-align: center;
   margin-top: 20px;
-  color: #f3f3f3;
+  color: var(--color-text-light);
   font-weight: 500;
 }
 
@@ -36,9 +36,9 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #131313;
-  color: #f3f3f3;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+  font-family: var(--font-primary);
   font-weight: 500;
   min-width: 40%;
   min-height: 60%;
@@ -55,30 +55,30 @@ h1 {
   color: #333;
   font-weight: 300;
   background-color: transparent;
-  color: #f3f3f3;
+  color: var(--color-text-light);
   border: 1px solid #ccc;
   border-radius: 3px;
  }
 
  .text-field:focus {
-  outline: #f3f3f3;
+  outline: var(--color-text-light);
   outline-offset: 2px;
-  border-color: #2cdf70;
-  transition: border-color 0.3s ease ;
+  border-color: var(--color-primary);
+  transition: border-color var(--transition-normal);
   box-shadow: 0 0 2px rgba(44, 223, 112, 0.5);
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow var(--transition-normal);
  }
 
  .label {
   font-size: 14px;
-  color: #f3f3f3;
+  color: var(--color-text-light);
   margin-bottom: 5px;
  }
 
  .login-button {
   width: 50%;
   height: 35px;
-  background-color: #20bb5b;
+  background-color: var(--color-primary-dark);
   color: #202020;
   border: none;
   border-radius: 20px;
@@ -88,17 +88,17 @@ h1 {
  }
 
  .login-button:hover {
-  background-color: #2cdf70;
-  transition: background-color 0.3s ease;
+  background-color: var(--color-primary);
+  transition: background-color var(--transition-normal);
  }
 
  .register-link {
-  color: #ffffff;
+  color: var(--color-white);
   text-decoration: none;
   font-weight: bold;
  }
 
  .register-link:hover {
   text-decoration: underline;
-  color: #2cdf70;
+  color: var(--color-primary);
  }
