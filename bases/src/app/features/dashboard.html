@@ -1,0 +1,374 @@
+<a class="skip" [href]="skipHref()">Saltar al contenido</a>
+<div class="app-shell">
+  <aside class="sidebar glass">
+    <a class="brand" routerLink="/" aria-label="Mood.i · Inicio"
+      ><app-brand
+    /></a>
+    <nav aria-label="Navegación principal">
+      @for (item of nav; track item.path) {
+        <a
+          [routerLink]="item.path"
+          [queryParams]="{ source: source(), period: period() }"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ariaCurrentWhenActive="page"
+          ><app-icon [name]="item.icon" />{{ item.label }}</a
+        >
+      }
+    </nav>
+    <div class="sidebar-bottom">
+      <p>Un pequeño mapa<br />de tu universo musical.</p>
+      <a routerLink="/settings"><app-icon name="music" /> Conectar Spotify</a>
+      <a routerLink="/about"><app-icon name="info" /> Sobre el proyecto</a>
+      @if (auth.connected()) {
+        <button (click)="logout()">
+          <app-icon name="logout" /> Cerrar sesión
+        </button>
+      }
+    </div>
+  </aside>
+  <main id="main" tabindex="-1" class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        Tu espacio musical <span>/</span>
+        {{ source() === "demo" ? "Demo" : "Spotify" }}
+      </div>
+      <div class="account">
+        <span class="status-dot"></span
+        >{{
+          source() === "demo"
+            ? "Explorando la demo"
+            : auth.connected()
+              ? "Spotify conectado"
+              : "Sesión desconectada"
+        }}
+      </div>
+    </header>
+    <div class="page-heading">
+      <div>
+        <h1>{{ title() }}</h1>
+        <p>
+          {{
+            view() === "recent"
+              ? "Una ventana a lo que sonó recientemente."
+              : "Las canciones y los artistas que vuelves a encontrar."
+          }}
+        </p>
+      </div>
+      @if (view() !== "recent") {
+        <div
+          class="period-control"
+          role="group"
+          aria-label="Período del ranking"
+        >
+          @for (p of periods; track p.value) {
+            <button
+              [class.selected]="period() === p.value"
+              [attr.aria-pressed]="period() === p.value"
+              (click)="selectPeriod(p.value)"
+            >
+              {{ p.label }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+    @if (source() === "demo") {
+      <div class="demo-banner">
+        <span
+          ><span class="badge">DEMO</span> Datos ficticios · Artistas y portadas
+          creados para este proyecto.</span
+        ><button (click)="connect()">
+          Conectar mis datos <app-icon name="arrow" />
+        </button>
+      </div>
+    }
+    @if (loading()) {
+      <div class="loading glass" role="status" aria-live="polite">
+        <span class="spinner"></span>
+        <h2>Buscando tu banda sonora…</h2>
+        <p>Estamos preparando tus rankings.</p>
+      </div>
+    }
+    @if (error(); as e) {
+      <section class="error-state glass" role="alert">
+        <app-icon name="info" />
+        <h2>
+          {{
+            e.kind === "expired"
+              ? "Vuelve a conectar tu música"
+              : e.kind === "restricted"
+                ? "Acceso restringido"
+                : "No pudimos completar la conexión"
+          }}
+        </h2>
+        <p>{{ e.message }}</p>
+        <div class="welcome-actions">
+          @if (e.kind === "expired" || e.kind === "oauth") {
+            <button class="button primary" (click)="connect()">
+              Conectar Spotify
+            </button>
+          } @else if (e.kind !== "config") {
+            <button
+              class="button secondary"
+              [disabled]="retrySeconds() > 0"
+              (click)="load()"
+            >
+              {{
+                retrySeconds() > 0
+                  ? "Reintentar en " + retrySeconds() + " s"
+                  : "Volver a intentar"
+              }}
+            </button>
+          }
+          <a
+            class="button secondary"
+            (click)="error.set(null)"
+            routerLink="/dashboard"
+            [queryParams]="{ source: 'demo' }"
+            >Explorar demo</a
+          >
+        </div>
+      </section>
+    }
+    @if (data(); as d) {
+      @if (view() === "overview") {
+        @if (d.artists[0]; as artist) {
+          <section class="artist-hero glass">
+            <div class="hero-copy">
+              <span class="rank-label"
+                >Tu artista favorito ·
+                {{
+                  periods[
+                    period() === "short_term"
+                      ? 0
+                      : period() === "medium_term"
+                        ? 1
+                        : 2
+                  ].label
+                }}</span
+              >
+              <h2>{{ artist.name }}</h2>
+              <p>Hay artistas que no solo escuchas.<br />Te acompañan.</p>
+              @if (artist.url) {
+                <a
+                  class="text-link"
+                  [href]="artist.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Abrir en Spotify <app-icon name="external"
+                /></a>
+              } @else {
+                <span class="hero-note">#1 en tu ranking de afinidad</span>
+              }
+            </div>
+            <img
+              [src]="artist.image || '/placeholder.svg'"
+              [alt]="'Imagen de ' + artist.name"
+              width="600"
+              height="600"
+              fetchpriority="high"
+            />
+          </section>
+        }
+        @if (!d.artists.length) {
+          <section class="glass music-panel">
+            <h2>Tu artista favorito aparecerá aquí</h2>
+            <p class="empty">
+              Todavía no hay artistas para este período. Prueba otro o vuelve
+              después de escuchar música.
+            </p>
+          </section>
+        }
+        <div class="overview-grid">
+          <section class="glass music-panel">
+            <div class="section-heading">
+              <h2>En repetición</h2>
+              <a
+                routerLink="/tracks"
+                [queryParams]="{ source: source(), period: period() }"
+                >Ver todas <app-icon name="arrow"
+              /></a>
+            </div>
+            <p class="section-note">Tus canciones con mayor afinidad</p>
+            <ol class="track-list">
+              @for (t of d.tracks.slice(0, 5); track $index) {
+                <li>
+                  <span class="rank">{{ $index + 1 }}</span
+                  ><img
+                    [src]="t.image || '/placeholder.svg'"
+                    alt=""
+                    width="48"
+                    height="48"
+                    loading="lazy"
+                  />
+                  <div class="track-copy">
+                    @if (t.url) {
+                      <a
+                        [href]="t.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >{{ t.name }}</a
+                      >
+                    } @else {
+                      <strong>{{ t.name }}</strong>
+                    }
+                    <span>{{ t.artist }}</span>
+                  </div>
+                  <span class="duration">{{ duration(t.durationMs) }}</span>
+                </li>
+              } @empty {
+                <li class="empty">
+                  Todavía no hay canciones para este período. Prueba otro.
+                </li>
+              }
+            </ol>
+          </section>
+          <section class="glass music-panel">
+            <div class="section-heading">
+              <h2>Tu constelación</h2>
+              <a
+                routerLink="/artists"
+                [queryParams]="{ source: source(), period: period() }"
+                >Ver todos <app-icon name="arrow"
+              /></a>
+            </div>
+            <p class="section-note">Más artistas de tu universo</p>
+            <app-constellation [artists]="d.artists.slice(1, 7)" />
+          </section>
+        </div>
+      }
+      @if (view() === "tracks") {
+        <section class="glass music-panel">
+          <p class="section-note">
+            Ranking por afinidad · No representa un conteo de reproducciones
+          </p>
+          <ol class="track-list full">
+            @for (t of d.tracks; track $index) {
+              <li>
+                <span class="rank">{{ $index + 1 }}</span
+                ><img
+                  [src]="t.image || '/placeholder.svg'"
+                  alt=""
+                  width="56"
+                  height="56"
+                  loading="lazy"
+                />
+                <div class="track-copy">
+                  @if (t.url) {
+                    <a
+                      [href]="t.url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >{{ t.name }}</a
+                    >
+                  } @else {
+                    <strong>{{ t.name }}</strong>
+                  }
+                  <span>{{ t.artist }}</span>
+                </div>
+                <span class="album">{{ t.album }}</span
+                ><span class="duration">{{ duration(t.durationMs) }}</span>
+              </li>
+            } @empty {
+              <li class="empty">
+                No hay canciones para este período. Selecciona otro período.
+              </li>
+            }
+          </ol>
+        </section>
+      }
+      @if (view() === "artists") {
+        <section class="glass music-panel">
+          <p class="section-note">
+            Artistas ordenados por afinidad para el período seleccionado
+          </p>
+          <div class="artist-grid">
+            @for (a of d.artists; track $index) {
+              <article>
+                <img
+                  [src]="a.image || '/placeholder.svg'"
+                  [alt]="'Imagen de ' + a.name"
+                  width="300"
+                  height="300"
+                  loading="lazy"
+                />
+                <div>
+                  <span class="rank">{{
+                    ($index + 1).toString().padStart(2, "0")
+                  }}</span>
+                  <h2>
+                    @if (a.url) {
+                      <a
+                        [href]="a.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >{{ a.name }}</a
+                      >
+                    } @else {
+                      {{ a.name }}
+                    }
+                  </h2>
+                </div>
+              </article>
+            } @empty {
+              <p class="empty">Todavía no hay artistas para este período.</p>
+            }
+          </div>
+        </section>
+      }
+      @if (view() === "recent") {
+        <section class="glass music-panel">
+          <p class="section-note">
+            {{
+              source() === "demo"
+                ? "Actividad ilustrativa del 5 de octubre de 2026."
+                : "Actividad reciente disponible en Spotify; no es tu historial completo."
+            }}
+          </p>
+          <ol class="track-list full">
+            @for (p of d.recent; track $index) {
+              <li>
+                <app-icon name="clock" /><img
+                  [src]="p.track.image || '/placeholder.svg'"
+                  alt=""
+                  width="56"
+                  height="56"
+                  loading="lazy"
+                />
+                <div class="track-copy">
+                  @if (p.track.url) {
+                    <a
+                      [href]="p.track.url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >{{ p.track.name }}</a
+                    >
+                  } @else {
+                    <strong>{{ p.track.name }}</strong>
+                  }
+                  <span>{{ p.track.artist }}</span>
+                </div>
+                <time [attr.datetime]="p.playedAt">{{
+                  p.playedAt | date: "dd/MM · HH:mm"
+                }}</time>
+              </li>
+            } @empty {
+              <li class="empty">
+                No hay reproducciones recientes disponibles. Vuelve después de
+                escuchar música.
+              </li>
+            }
+          </ol>
+        </section>
+      }
+    }
+    <footer class="dashboard-footer">
+      <span>La música cambia. Tu mapa también.</span
+      ><span
+        >{{ source() === "demo" ? "Demo ilustrativa" : "Datos de Spotify" }} ·
+        Rankings por afinidad</span
+      >
+    </footer>
+  </main>
+</div>
